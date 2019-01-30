@@ -78,6 +78,7 @@ public class OptionsOfType extends Screen {
             }
         });
     }
+    ///
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
