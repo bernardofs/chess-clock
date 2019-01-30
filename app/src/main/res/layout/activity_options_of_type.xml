@@ -18,7 +18,7 @@
         android:layout_marginBottom="24dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/butProceed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -33,18 +33,36 @@
             android:textStyle="bold" />
 
         <Space
+            android:id="@+id/space1"
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <EditText
-            android:id="@+id/etSetTotalTime"
+        <LinearLayout
+            android:id="@+id/listTot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="time" />
+            android:weightSum="100"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etSetTotalTime"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="  minutes" />
+        </LinearLayout>
 
         <Space
+            android:id="@+id/space2"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
 
@@ -58,21 +76,38 @@
             android:textStyle="bold" />
 
         <Space
+            android:id="@+id/space3"
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <EditText
-            android:id="@+id/etSetIndividualTime"
+        <LinearLayout
+            android:id="@+id/listMov"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="time" />
+            android:weightSum="100"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etSetIndividualTime"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvSeconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="  seconds" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/butProceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

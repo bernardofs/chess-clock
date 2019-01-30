@@ -20,6 +20,11 @@ public class Screen extends AppCompatActivity {
         return getIntent().getIntExtra(name, -1);
     }
 
+    boolean getBoolVarFromLastActivity(String name) {
+        // this function returns the variable value stored from the last activity
+        return getIntent().getBooleanExtra(name, false);
+    }
+
     void backToInitialScreenAndCloseAllActivities() {
         Intent intent = new Intent(getApplicationContext(), ChooseType.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -82,9 +87,23 @@ public class Screen extends AppCompatActivity {
         return false;
     }
 
+    boolean isNotZero(String x) {
+        if (Integer.parseInt(x) != 0)
+            return true;
+        else {
+            createErrorDialog("Time must be greater than zero");
+            return false;
+        }
+    }
+
     boolean checkETisValidNonNegativeNumber(EditText et) {
         String text = et.getText().toString();
         return !isEmpty(text) && isNumber(text) && isNonNegative(text);
+    }
+
+    boolean checkETisValidPositive(EditText et) {
+        String text = et.getText().toString();
+        return !isEmpty(text) && isNumber(text) && isNotZero(text);
     }
 
     boolean checkETisValidNumber(EditText et) {
