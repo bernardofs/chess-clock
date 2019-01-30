@@ -9,10 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OptionsOfType"
-            android:exported="true"></activity>
+        <activity android:name=".CountdownScreen"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Screen" />
         <activity
-            android:name=".MainActivity"
+            android:name=".OptionsOfType"
+            android:exported="true" />
+        <activity
+            android:name=".ChooseType"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
