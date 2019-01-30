@@ -3,7 +3,7 @@ package com.example.chessclock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class OptionsOfType extends AppCompatActivity {
+public class OptionsOfType extends Screen {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
