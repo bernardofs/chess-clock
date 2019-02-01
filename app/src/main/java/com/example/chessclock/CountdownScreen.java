@@ -10,24 +10,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class CountdownScreen extends Screen {
 
     private boolean showTot;
     private boolean showMov;
-    private int timeMov;
+    private boolean showingDialog;
     private CountDownTimer cdWhiteTot;
     private CountDownTimer cdWhiteMov;
     private CountDownTimer cdBlackTot;
     private CountDownTimer cdBlackMov;
     private int currentPlayerToMove;
     private int startGame;
+    private int remainingWhiteTot;
+    private int remainingBlackTot;
 
     int min(int a, int b) {
         if(a < b)
             return a;
         return b;
+    }
+
+    int min(int a, int b, int c) {
+        if(a < b)
+            return min(a, c);
+        return min(b, c);
     }
 
     String intToTime(int x) {
@@ -78,6 +84,7 @@ public class CountdownScreen extends Screen {
 
     void createDialogAndGoBack(String title, String message) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        showingDialog = true;
         alert.setTitle(title);
         alert.setMessage(message);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -91,6 +98,7 @@ public class CountdownScreen extends Screen {
         alert.setNegativeButton("Give One More Chance", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                showingDialog = false;
                 if(currentPlayerToMove == 0) {
                     cdWhiteMov.resume();
                     cdWhiteTot.resume();
@@ -117,6 +125,13 @@ public class CountdownScreen extends Screen {
 
     }
 
+    void cancelAll() {
+        cdWhiteTot.cancel();
+        cdWhiteMov.cancel();
+        cdBlackTot.cancel();
+        cdBlackMov.cancel();
+    }
+
     void getFromLastActivity() {
         this.showMov = getBoolVarFromLastActivity("showMov");
         this.showTot = getBoolVarFromLastActivity("showTot");
@@ -129,7 +144,9 @@ public class CountdownScreen extends Screen {
         cdWhiteTot = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int x = (int)millisUntilFinished / 1000;
+                int x = (int)millisUntilFinished;
+                remainingWhiteTot = (int)millisUntilFinished;
+                x /= 1000;
                 if(x <= 30) {
                     setColorTextView(tvWhiteTot, "#cc0000");
                 }
@@ -139,8 +156,10 @@ public class CountdownScreen extends Screen {
             @Override
             public void onFinish() {
                 tvWhiteTot.setText("0");
-                pauseAll();
-                createDialogAndGoBack("Out Of Time", "Black player wins");
+                if(showTot && showMov) {
+                    pauseAll();
+                    createDialogAndGoBack("Out Of Time", "Black player wins");
+                }
             }
         };
 
@@ -148,18 +167,16 @@ public class CountdownScreen extends Screen {
 
     void setCdWhiteMov() {
 
-        int time = timeInTvMov()*1000;
+        int time = timeInTvMov(remainingWhiteTot);
         final TextView tvWhiteMov = (TextView) findViewById(R.id.tvWhiteMove);
         final TextView tvWhiteTot = (TextView) findViewById(R.id.tvWhiteTotal);
 
         cdWhiteMov = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int x = (int)millisUntilFinished / 1000;
-
-//                int timeTotal = Integer.parseInt(tvWhiteTot.toString());
-//                System.out.println("time total = " + timeTotal);
-//                x = min(x, timeTotal);
+                int x = (int)millisUntilFinished;
+                x = min(x, remainingWhiteTot);
+                x /= 1000;
                 if(x > 5) {
                     setColorTextView(tvWhiteMov, "#00cc00");
                 } else {
@@ -184,7 +201,9 @@ public class CountdownScreen extends Screen {
         cdBlackTot = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int x = (int) millisUntilFinished / 1000;
+                int x = (int) millisUntilFinished;
+                remainingBlackTot = (int)millisUntilFinished;
+                x /= 1000;
                 if(x <= 30) {
                     setColorTextView(tvBlackTot, "#cc0000");
                 }
@@ -194,21 +213,25 @@ public class CountdownScreen extends Screen {
             @Override
             public void onFinish() {
                 tvBlackTot.setText("0");
-                pauseAll();
-                createDialogAndGoBack("Out Of Time", "White player wins");
+                if(showMov && showTot) {
+                    pauseAll();
+                    createDialogAndGoBack("Out Of Time", "White player wins");
+                }
             }
         };
     }
 
     void setCdBlackMov() {
 
-        int time = timeInTvMov()*1000;
+        int time = timeInTvMov(remainingBlackTot);
         final TextView tvBlackMov = (TextView) findViewById(R.id.tvBlackMove);
 
         cdBlackMov = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int x = (int) millisUntilFinished / 1000;
+                int x = (int) millisUntilFinished;
+                x = min(x, remainingBlackTot);
+                x /= 1000;
                 if(x > 5) {
                     setColorTextView(tvBlackMov, "#00cc00");
                 } else {
@@ -270,6 +293,8 @@ public class CountdownScreen extends Screen {
         this.startGame = 0;
         // -1 = nobody, 0 = white, 1 = black
         this.currentPlayerToMove = -1;
+        this.remainingBlackTot = 0x3FFFFFFF;
+        this.remainingWhiteTot= 0x3FFFFFFF;
     }
 
     void resumeWhiteFromBlack() {
@@ -277,8 +302,9 @@ public class CountdownScreen extends Screen {
         cdBlackTot.pause();
         cdBlackMov.pause();
         setColorTextView(((TextView)findViewById(R.id.tvBlackMove)), "#FFFFFF");
-        if(showMov)
+        if(showMov) {
             resetTvBlackMov();
+        }
         currentPlayerToMove = 0;
 
         if(showMov && showTot) {
@@ -297,12 +323,15 @@ public class CountdownScreen extends Screen {
         cdWhiteTot.pause();
         cdWhiteMov.pause();
         setColorTextView(((TextView)findViewById(R.id.tvWhiteMove)), "#000000");
-        if(showMov)
+        if(showMov) {
             resetTvWhiteMov();
+        }
         currentPlayerToMove = 1;
 
         if(startGame == 1) {
-            setCdWhiteMov();
+            if(showMov) {
+                setCdWhiteMov();
+            }
             cdBlackMov.start();
             cdBlackTot.start();
             startGame++;
@@ -400,12 +429,14 @@ public class CountdownScreen extends Screen {
         return timeTotal;
     }
 
-    int timeInTvMov() {
-        if(showMov) {
-            int timeMov = (getIntVarFromLastActivity("timeMov"));
-            return timeMov;
+    int timeInTvMov(int remaining) {
+        int timeTotal = (getIntVarFromLastActivity("timeTotal"))*60*1000;
+        int timeMov = (getIntVarFromLastActivity("timeMov"))*1000;
+        if(showMov && showTot) {
+            return min(timeTotal, timeMov, remaining);
+        } else if(showMov) {
+            return min(timeMov, remaining);
         } else if(showTot) {
-            int timeTotal = (getIntVarFromLastActivity("timeTotal"))*60;
             return timeTotal;
         }
 
@@ -415,21 +446,21 @@ public class CountdownScreen extends Screen {
     void hideElements() {
 
         if(showTot == false || showMov == false) {
-            ((TextView) findViewById(R.id.tvBlackTotal)).setTextColor(Color.parseColor("#ffffff"));
+            ((TextView) findViewById(R.id.tvBlackTotal)).setTextColor(Color.parseColor("#000000"));
             ((TextView) findViewById(R.id.tvWhiteTotal)).setTextColor(Color.parseColor("#ffffff"));
         }
     }
 
     void resetTvBlackMov() {
         if(showMov) {
-            int timeTvMov = timeInTvMov();
+            int timeTvMov = timeInTvMov(remainingBlackTot) / 1000;
             ((TextView)findViewById(R.id.tvBlackMove)).setText(intToTime(timeTvMov));
         }
     }
 
     void resetTvWhiteMov() {
         if(showMov) {
-            int timeTvMov = timeInTvMov();
+            int timeTvMov = timeInTvMov(remainingWhiteTot) / 1000;
             ((TextView)findViewById(R.id.tvWhiteMove)).setText(intToTime(timeTvMov));
         }
     }
@@ -439,9 +470,11 @@ public class CountdownScreen extends Screen {
         ((TextView)findViewById(R.id.tvWhiteTotal)).setText(intToTime(timeTvTot));
         ((TextView)findViewById(R.id.tvBlackTotal)).setText(intToTime(timeTvTot));
 
-        int timeTvMov = timeInTvMov();
+        int timeTvMov = timeInTvMov(remainingWhiteTot)  / 1000;
         ((TextView)findViewById(R.id.tvWhiteMove)).setText(intToTime(timeTvMov));
+        timeTvMov = timeInTvMov(remainingBlackTot)  / 1000;
         ((TextView)findViewById(R.id.tvBlackMove)).setText(intToTime(timeTvMov));
+        showingDialog = false;
     }
 
     void butEndClick() {
@@ -464,9 +497,11 @@ public class CountdownScreen extends Screen {
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        cancelAll();
                         Intent intent = new Intent(getApplicationContext(), ChooseType.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        finish();
                     }
                 });
                 alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -497,6 +532,25 @@ public class CountdownScreen extends Screen {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(showingDialog) {
+            showingDialog = false;
+            if(currentPlayerToMove == 0) {
+                cdWhiteMov.resume();
+                cdWhiteTot.resume();
+                resumeBlackFromWhite();
+            } else if(currentPlayerToMove == 1) {
+                cdBlackMov.resume();
+                cdBlackTot.resume();
+                resumeWhiteFromBlack();
+            }
+        } else {
+            cancelAll();
+        }
     }
 
     @Override

@@ -81,7 +81,7 @@ public class Screen extends AppCompatActivity {
             x = x.substring(1);
         }
 
-        if(x.equals("10000000") || x.length() < 8)
+        if(x.equals("1000000") || x.length() < 7)
             return true;
 
         return false;
