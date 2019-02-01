@@ -21,7 +21,8 @@
             android:id="@+id/clBlack"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_weight="45">
+            android:layout_weight="45"
+            android:background="@color/black">
 
             <TextView
                 android:id="@+id/tvBlackMove"
@@ -34,6 +35,7 @@
                 android:layout_marginBottom="8dp"
                 android:rotation="180"
                 android:text="TextView"
+                android:textColor="@color/white"
                 android:textSize="60dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvBlackTotal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +52,7 @@
                 android:layout_marginBottom="80dp"
                 android:rotation="180"
                 android:text="TextView"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -60,6 +63,7 @@
             android:layout_height="10dp"
             android:layout_weight="10"
             android:orientation="horizontal"
+            android:background="#C0C0C0"
             android:weightSum="100">
 
             <Space
@@ -72,14 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="40"
-                android:text="Button" />
+                android:text="Start" />
 
             <Button
                 android:id="@+id/butEndGame"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="40"
-                android:text="Button" />
+                android:text="End Game" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -104,6 +108,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="TextView"
+                android:textColor="@color/black"
                 android:textSize="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +124,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="TextView"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

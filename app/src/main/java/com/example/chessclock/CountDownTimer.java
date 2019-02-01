@@ -20,8 +20,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Message;
 
-// https://gist.github.com/bverc/1492672/62eee8f459632fcacdb35632035301c4e4d97c22
-
 /**
  * Schedule a countdown until a time in the future, with
  * regular notifications on intervals along the way.
