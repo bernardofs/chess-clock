@@ -79,7 +79,6 @@ public class CountdownScreen extends Screen {
 
         return str.toString();
 
-
     }
 
     void createDialogAndGoBack(String title, String message) {
@@ -144,6 +143,10 @@ public class CountdownScreen extends Screen {
         cdWhiteTot = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+
+                if(!showMov || !showTot)
+                    return;
+
                 int x = (int)millisUntilFinished;
                 remainingWhiteTot = (int)millisUntilFinished;
                 x /= 1000;
@@ -177,7 +180,10 @@ public class CountdownScreen extends Screen {
                 int x = (int)millisUntilFinished;
                 x = min(x, remainingWhiteTot);
                 x /= 1000;
-                if(x > 5) {
+
+                if(showTot && !showMov && x <= 30) {
+                    setColorTextView(tvWhiteMov, "#cc0000");
+                } else if(x > 5) {
                     setColorTextView(tvWhiteMov, "#00cc00");
                 } else {
                     setColorTextView(tvWhiteMov, "#cc0000");
@@ -201,6 +207,10 @@ public class CountdownScreen extends Screen {
         cdBlackTot = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+
+                if(!showMov || !showTot)
+                    return;
+
                 int x = (int) millisUntilFinished;
                 remainingBlackTot = (int)millisUntilFinished;
                 x /= 1000;
@@ -232,7 +242,10 @@ public class CountdownScreen extends Screen {
                 int x = (int) millisUntilFinished;
                 x = min(x, remainingBlackTot);
                 x /= 1000;
-                if(x > 5) {
+
+                if(showTot && !showMov && x <= 30) {
+                    setColorTextView(tvBlackMov, "#cc0000");
+                } else if(x > 5) {
                     setColorTextView(tvBlackMov, "#00cc00");
                 } else {
                     setColorTextView(tvBlackMov, "#cc0000");
@@ -361,6 +374,9 @@ public class CountdownScreen extends Screen {
                 if(currentPlayerToMove != 1)
                     return;
 
+                if(cdBlackMov.ismPaused())
+                    return;
+
                 resumeWhiteFromBlack();
 
             }
@@ -372,6 +388,9 @@ public class CountdownScreen extends Screen {
                 if(currentPlayerToMove != 1)
                     return;
 
+                if(cdBlackMov.ismPaused())
+                    return;
+
                 resumeWhiteFromBlack();
             }
         });
@@ -380,6 +399,9 @@ public class CountdownScreen extends Screen {
             @Override
             public void onClick(View v) {
                 if(currentPlayerToMove != 1)
+                    return;
+
+                if(cdBlackMov.ismPaused())
                     return;
 
                 resumeWhiteFromBlack();
@@ -398,6 +420,9 @@ public class CountdownScreen extends Screen {
                 if(currentPlayerToMove != 0)
                     return;
 
+                if(cdWhiteMov.ismPaused())
+                    return;
+
                 resumeBlackFromWhite();
             }
         });
@@ -408,6 +433,9 @@ public class CountdownScreen extends Screen {
                 if(currentPlayerToMove != 0)
                     return;
 
+                if(cdWhiteMov.ismPaused())
+                    return;
+
                 resumeBlackFromWhite();
             }
         });
@@ -416,6 +444,9 @@ public class CountdownScreen extends Screen {
             @Override
             public void onClick(View v) {
                 if(currentPlayerToMove != 0)
+                    return;
+
+                if(cdWhiteMov.ismPaused())
                     return;
 
                 resumeBlackFromWhite();

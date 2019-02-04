@@ -10,10 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CountdownScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Screen" />
+        <activity android:name=".Screen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".OptionsOfType" />
+            android:name=".OptionsOfType"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ChooseType"
             android:configChanges="orientation"
