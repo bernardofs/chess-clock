@@ -1,3 +1,6 @@
+<p align="center"><img src="app/src/main/ic_launcher-web.png" alt="Drawing Tool" height="200px"></p>
+
+
 # ChessClock
 
 This application simulates a chess clock. It was implemented on Android Studio in Java Programming Language.
