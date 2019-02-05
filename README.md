@@ -5,6 +5,8 @@
 
 This application simulates a chess clock. It was implemented on Android Studio in Java Programming Language.
 
+**Download APK** -> [ChessClock](https://github.com/bfs07/ChessClock/blob/master/ChessClock.apk)
+
 ## Chess Timing Methods
 
 In the first screen, it is asked to the user to choose between three types of chess timing methods as illustrated in the image below.
