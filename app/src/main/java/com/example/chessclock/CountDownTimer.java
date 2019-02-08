@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
  *
+ * Modifications copyright (C) 2019 Bernardo Flores Salmeron
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -170,55 +172,8 @@ public abstract class CountDownTimer {
         }
     };
 
-    public long getmMillisInFuture() {
-        return mMillisInFuture;
-    }
-
-    public long getmCountdownInterval() {
-        return mCountdownInterval;
-    }
-
-    public long getmStopTimeInFuture() {
-        return mStopTimeInFuture;
-    }
-
-    public void setmStopTimeInFuture(long mStopTimeInFuture) {
-        this.mStopTimeInFuture = mStopTimeInFuture;
-    }
-
-    public long getmPauseTime() {
-        return mPauseTime;
-    }
-
-    public void setmPauseTime(long mPauseTime) {
-        this.mPauseTime = mPauseTime;
-    }
-
-    public boolean ismCancelled() {
-        return mCancelled;
-    }
-
-    public void setmCancelled(boolean mCancelled) {
-        this.mCancelled = mCancelled;
-    }
-
     public boolean ismPaused() {
         return mPaused;
     }
 
-    public void setmPaused(boolean mPaused) {
-        this.mPaused = mPaused;
-    }
-
-    public static int getMSG() {
-        return MSG;
-    }
-
-    public Handler getmHandler() {
-        return mHandler;
-    }
-
-    public void setmHandler(Handler mHandler) {
-        this.mHandler = mHandler;
-    }
 }
